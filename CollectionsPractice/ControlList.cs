@@ -37,11 +37,14 @@ namespace CollectionsPractice
 
         public void Merge(ITestCollection collection)
         {
-            AddRange(collection);
-
-            if (IsSorted)
+            if (collection != null)
             {
-                Sort();
+                AddRange(collection);
+
+                if (IsSorted)
+                {
+                    Sort();
+                }
             }
         }
 
