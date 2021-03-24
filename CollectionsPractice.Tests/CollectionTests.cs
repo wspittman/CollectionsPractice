@@ -164,12 +164,8 @@ namespace CollectionsPractice.Tests
         private void Check(ITestCollection expected, ITestCollection collection)
         {
             Assert.AreEqual(expected.ToString(), collection.ToString());
-            Assert.IsFalse(collection.Contains(777));
-
-            if (expected.Count > 0)
-            {
-                Assert.IsTrue(collection.Contains(1));
-            }
+            Assert.AreEqual(expected.Contains(777), collection.Contains(777));
+            Assert.AreEqual(expected.Contains(1), collection.Contains(1));
         }
     }
 }
