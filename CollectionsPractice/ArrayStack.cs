@@ -49,6 +49,11 @@ namespace CollectionsPractice
             throw new NotImplementedException();
         }
 
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
         #region Things we don't care about
 
         public void CopyTo(int[] array, int arrayIndex)
