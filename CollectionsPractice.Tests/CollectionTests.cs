@@ -8,6 +8,8 @@ namespace CollectionsPractice.Tests
         public enum TestableType { ArrayList, SortedArrayList, LinkedList, ArrayStack, LinkedQueue, BinarySearchTree }
         public enum InitType { Empty, Single, Asc, Desc, Mixed }
 
+        // Note: Initialize(int[] init) is tested implicitly by Startup()
+
         [Test]
         public void TestAdd([Values] TestableType testableType, [Values] InitType initType)
         {
@@ -32,6 +34,100 @@ namespace CollectionsPractice.Tests
             }
             Check(expected, collection);
         }
+
+        [Test]
+        public void TestClear([Values] TestableType testableType, [Values] InitType initType)
+        {
+            var (expected, collection) = Startup(testableType, initType);
+
+            expected.Clear();
+            collection.Clear();
+            Check(expected, expected);
+
+            expected.Clear();
+            collection.Clear();
+            Check(expected, expected);
+        }
+
+        // Note: Contains(int item) is tested implicitly by Check()
+
+        [Test]
+        public void TestMerge([Values] TestableType testableType, [Values] InitType initType)
+        {
+            var (expected, collection) = Startup(testableType, initType);
+
+            expected.Merge(null);
+            collection.Merge(null);
+            Check(expected, collection);
+
+            foreach (var val in Enum.GetValues(typeof(InitType)))
+            {
+                var (tempExpected, tempCollection) = Startup(testableType, (InitType)val);
+                expected.Merge(tempExpected);
+                collection.Merge(tempCollection);
+                Check(expected, collection);
+            }
+
+            expected.Merge(expected);
+            collection.Merge(collection);
+            Check(expected, collection);
+        }
+
+        [Test]
+        public void TestRemove([Values] TestableType testableType, [Values] InitType initType)
+        {
+            var (expected, collection) = Startup(testableType, initType);
+
+            // Note: Stacks and Queues ignore the value argument, performing pop or dequeue instead.
+
+            bool expectedResult = expected.Remove(777);
+            bool collectionResult = collection.Remove(777);
+            Assert.AreEqual(expectedResult, collectionResult);
+            Check(expected, collection);
+
+            expectedResult = expected.Remove(1);
+            collectionResult = collection.Remove(1);
+            Assert.AreEqual(expectedResult, collectionResult);
+            Check(expected, collection);
+
+            for (int i = -20; i < 20; i++)
+            {
+                expectedResult = expected.Remove(i);
+                collectionResult = collection.Remove(i);
+                Assert.AreEqual(expectedResult, collectionResult);
+                Check(expected, collection);
+            }
+        }
+
+        [Test]
+        public void TestReverse([Values] TestableType testableType, [Values] InitType initType)
+        {
+            var (expected, collection) = Startup(testableType, initType);
+
+            expected.Reverse();
+            collection.Reverse();
+            Check(expected, collection);
+
+            expected.Reverse();
+            collection.Reverse();
+            Check(expected, collection);
+        }
+
+        [Test]
+        public void TestStutter([Values] TestableType testableType, [Values] InitType initType)
+        {
+            var (expected, collection) = Startup(testableType, initType);
+
+            expected.Stutter();
+            collection.Stutter();
+            Check(expected, collection);
+
+            expected.Stutter();
+            collection.Stutter();
+            Check(expected, collection);
+        }
+
+        // Note: ToString() is tested implicitly by Check()
 
         private (ITestCollection, ITestCollection) Startup(TestableType testableType, InitType initType)
         {
